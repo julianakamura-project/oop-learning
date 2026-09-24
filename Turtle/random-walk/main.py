@@ -21,7 +21,7 @@ for _ in range(1000):
     angle = random.choice(tuple(directions))
     # timmy.color(random.choice(color_list)[0])
     timmy.color(random_color())
-    timmy.pencolor(random.choice(color_list)[0])
+    # timmy.pencolor(random.choice(color_list)[0])
     timmy.setheading(angle)
     timmy.forward(20)
 
