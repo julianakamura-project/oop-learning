@@ -1,56 +1,35 @@
 from turtle import Screen, Turtle
+from snake import Snake
 import time
 
-### Screen Setup
+## Screen Setup
 screen = Screen()
 screen.setup(width=600, height=600)
 screen.tracer(0)
 screen.bgcolor("black")
 screen.title("Snake")
-###
+##
 
-### Initial Snake
-positions = [(0,0), (-20,0), (-40,0)]
-body_segments = []
-for coord in positions:
-    body = Turtle("square")
-    body.color("white")
-    body.penup()
-    body.goto(coord)
-    body_segments.append(body)
-screen.update()
-###
+## Game body
+snake = Snake()
 
 ### Movements
-def face_right():
-    body_segments[0].seth(0)
-def face_up():
-    body_segments[0].seth(90)
-def face_left():
-    body_segments[0].seth(180)
-def face_down():
-    body_segments[0].seth(270)
+screen.listen()
+screen.onkey(key="Up", fun=snake.up)
+screen.onkey(key="Down", fun=snake.down)
+screen.onkey(key="Left", fun=snake.left)
+screen.onkey(key="Right", fun=snake.right)
+###
 
-screen.onkey(key="Up", fun=face_up)
-screen.onkey(key="Down", fun=face_down)
-screen.onkey(key="Left", fun=face_left)
-screen.onkey(key="Right", fun=face_right)
-####
-
-### Game body
 game_on = True
 while game_on:
+    if not snake.within_boundary():
+        game_on = False
+        continue
     screen.update()
     time.sleep(0.1)
-    screen.onkey(key="Up", fun=face_up)
-    screen.onkey(key="Down", fun=face_down)
-    screen.onkey(key="Left", fun=face_left)
-    screen.onkey(key="Right", fun=face_right)
-    for body_num in range(len(body_segments)-1, 0, -1):
-        body_segments[body_num].goto(body_segments[body_num-1].xcor(),
-                                     body_segments[body_num-1].ycor())
-    body_segments[0].forward(20)
-###
+    snake.move()
+##
 
 
 
