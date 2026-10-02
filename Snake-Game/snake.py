@@ -1,4 +1,5 @@
 from turtle import Turtle
+import scoreboard
 
 INIT_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 MOVE_DISTANCE = 20
@@ -15,17 +16,23 @@ class Snake:
 
     def create_snake(self):
         for coord in INIT_POSITIONS:
-            body = Turtle("square")
-            body.color("white")
-            body.penup()
-            body.goto(coord)
-            self.body_seg.append(body)
+            self.add_segment(coord)
 
     def move(self):
         for body_num in range(len(self.body_seg) - 1, 0, -1):
             self.body_seg[body_num].goto(self.body_seg[body_num - 1].xcor(),
                                          self.body_seg[body_num - 1].ycor())
         self.head.forward(MOVE_DISTANCE)
+
+    def add_segment(self, coord):
+        body = Turtle("square")
+        body.color("white")
+        body.penup()
+        body.goto(coord)
+        self.body_seg.append(body)
+
+    def extend(self):
+        self.add_segment(self.body_seg[-1].position())
 
     def right(self):
         if self.head.heading() != LEFT:
@@ -42,13 +49,3 @@ class Snake:
     def down(self):
         if self.head.heading() != UP:
             self.head.seth(270)
-
-    def within_boundary(self):
-        if (
-                self.head.xcor() > 280 or
-                self.head.xcor() < -280 or
-                self.head.ycor() > 280 or
-                self.head.ycor() < -280
-        ):
-            return False
-        return True
